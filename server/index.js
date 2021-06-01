@@ -1,23 +1,66 @@
+/* Import dependencies */
 const F = require("fnct");
 const fs = require("fs");
 const path = require("path");
+const express = require("express");
+const WebSocketServer = require("ws").Server
 const puppeteer = require("puppeteer");
 
-user = fs.readFileSync(path.join(__dirname, "user.txt")).toString().split("\r\n");
-async function run() {
+const app = express();
+const port = 3000;
+
+/* Allow access to files */
+app.use("/public", express.static(path.join(__dirname, "../")));
+app.use("/", express.static(path.join(__dirname, "client")));
+
+/* Redirect to index file */
+app.get('/', (req, res) => {
+  res.send(fs.readFileSync(path.join(__dirname, "./client/index.html")).toString());
+});
+
+/* Set up server */
+app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}`);
+});
+
+
+/* Websocket communication */
+const wss = new WebSocketServer({port: 8081}); wss.on('connection', (ws) => {
+  ws.on("message", async (msg) => {
+    msg = JSON.parse(msg);
+    if (msg.type == "GET") {
+      if (msg.name == "timetable") {
+        timetable = await getTimetable(msg.username, msg.password);
+        ws.send(JSON.stringify({
+          type: "RETURN",
+          name: "timetable",
+          time: Date.now(),
+          data: timetable,
+        }));
+      }
+    }
+  });
+  ws.on("end", () => {
+    console.error("Connection ended...");
+  });
+});
+
+
+/* Get timetable from browser */
+async function getTimetable(username, password) {
   console.log("Opening Browser...");
-  browser = await puppeteer.launch({headless: false, defaultViewport: null, args: ['--start-maximized']});
+  browser = await puppeteer.launch({headless: true, defaultViewport: null, args: ['--start-maximized']});
   [page] = await browser.pages();
   console.log("Opening Page...");
   await page.goto("https://lilydaleheights-vic.compass.education/");
 
   console.log("Filling username and password...");
-  await page.$$eval("#username", (el, user) => {
-    el[0].value = user[0];
-  }, user);
-  await page.$$eval("#password", (el, user) => {
-    el[0].value = user[1];
-  }, user);
+  await page.$$eval("#username", (el, username) => {
+    el[0].value = username;
+  }, username);
+  await page.$$eval("#password", (el, password) => {
+    el[0].value = password;
+  }, password);
 
   console.log("Logging in...");
   await page.$eval("#button1", el => {
@@ -47,8 +90,7 @@ async function run() {
       teacher: b[3],
     });
   }
-  console.log(subjects);
-
   browser.close();
+
+  return subjects;
 }
-run();

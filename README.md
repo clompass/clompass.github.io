@@ -1,1 +1,1 @@
-# BetterCompass
+# Clompass
