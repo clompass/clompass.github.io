@@ -3,20 +3,24 @@
   <head>
     <title>Clompass</title>
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" type="image/svg+xml" href="svg/icon.svg">
-    <script src="https://kit.fontawesome.com/03abc70cb1.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="https://fnctjs.github.io/index.js"></script>
-    <script type="text/javascript" src="data/times.js" defer></script>
-    <script type="text/javascript" src="data/subjects.js" defer></script>
-    <script type="text/javascript" src="data/test-user.js" defer></script>
     <script type="text/javascript" src="js/main.js" defer></script>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
   </head>
   <body onload="init()">
-    Clompass
+    <h1>Clompass</h1>
+
+    <button onclick="login()">Login</button>
+    <details open>
+      <summary>Login Details</summary>
+      <input id="username" type="text" placeholder="ABC0012">
+      <label>Username</label>
+      <br>
+      <input id="password" type="password" placeholder="P@$$W0rD">
+      <label>Password</label>
+    </details>
 
     <section id="timetable">
     </section>
