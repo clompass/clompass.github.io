@@ -1,0 +1,23 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+
+  <!-- Main -->
+  <rect x="5" y="5" width="90" height="90" rx="40" fill="#007991" stroke-width="10" stroke="#222E50" />
+
+  <!-- Top -->
+  <rect x="42.5" y="24" width="15" height="12" rx="4" fill="#222E50" />
+
+  <!-- Arms -->
+  <path d="
+    M 50 40
+    m -2 2
+    c 0 0 3 -3 -10 -6
+    c -3 -1 -3 10 -12 43
+  " fill="#222E50" />
+  <path d="
+    M 50 40
+    m 2 2
+    c 0 0 -3 -3 10 -6
+    c 3 -1 3 10 12 43
+  " fill="#222E50" />
+
+</svg>
